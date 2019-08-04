@@ -9,81 +9,84 @@
 	</style>
 </head>
 <body>
- <form method="post">
-	  <div class="container">
-	  	<div class="row">
-	  		<div class="col-md-2">
-	  			<div class="node green"></div>
-	  		</div>
-	  		<div class="col-md-4">
-	  			<div class="form-group">
-	  				<input type="text" class="form-control" name="">
-	  			</div>
-	  		</div>
-	  		<div class="col-md-4">
-	  			<div class="form-group">
-	  				<select class="form-control" style="border: none;border-bottom: 1px solid;border-radius: 0;">
-	  					<option>option-1</option>
-	  					<option>option-2</option>
-	  					<option>option-3</option>
-	  				</select>
-	  			</div>
-	  		</div>
-	  	</div>
-	  	<div class="divider grey"></div>
-	  	<div class="row">
-	  		<div class="col-md-2">
-	  			<div class="node grey"></div>
-	  		</div>
-	  		<div class="col-md-4">
-	  			<div class="form-group">
-	  				<input type="text" class="form-control" name="">
-	  			</div>
-	  		</div>
-	  		<div class="col-md-4">
-	  			<div class="form-group">
-	  				<input type="text" class="form-control" name="">
-	  			</div>
-	  		</div>
-	  	</div>
-	  	<div class="divider grey"></div>
-	  	<div class="row">
-	  		<div class="col-md-2">
-	  			<div class="node grey"></div>
-	  		</div>
-	  		<div class="col-md-4">
-	  			<div class="form-group">
-	  				<input type="text" class="form-control" name="">
-	  			</div>
-	  		</div>
-	  		<div class="col-md-4">
-	  			<div class="form-group">
-	  				<input type="text" class="form-control" name="">
-	  			</div>
-	  		</div>
-	  	</div>
-	  	<div class="divider grey"></div>
-	  	<div class="row">
-	  		<div class="col-md-2">
-	  			<div class="node grey"></div>
-	  		</div>
-	  		<div class="col-md-4">
-	  			<div class="form-group">
-	  				<input type="text" class="form-control" name="">
-	  			</div>
-	  		</div>
-	  		<div class="col-md-4">
-	  			<div class="form-group">
-	  				<input type="text" class="form-control" name="">
-	  			</div>
-	  		</div>
-	  	</div>
-	  	
-	  </div>
-  </form>
+<select id="select">
+	<option>Choose</option>
+	<option value="A(5,6)">A(5,6)</option>
+	<option value="B(6,5)">B(6,5)</option>
+</select>
+<br><br><br>
+<style type="text/css">
+	div.block{background: white;border: 1px solid;padding: 5px;width: 30%;display: none;}
+	div.block.active{display: block}
+</style>
+<div class="block" id="clearBLock">
+	<div>
+		<label>Indicator</label>
+	</div>
+	<div>
+		<input type="number" name="" id="num">
+		<input type="number" name="" id="num1">
+	</div>
+ 	<div style="padding: 5px;">
+		<input type="button" name="" id="btn" value="Save">
+		<input type="button" name="" id="clr" value="Clear">
+	</div>
+</div>
 <!-- </div> -->
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 </body>
 </html>
+<script type="text/javascript">
+	$(document).ready(() => {
+		// alert("ch");
+		$("#select").on("change", () => {
+			// console.log($("#select").val());
+			let a = [];
+			a = $("#select").val();
+			let c = 0;
+			while(a[c] != null){
+				if(a[c]==="("){
+					break;					
+				}else{
+					c++;
+				}
+			}
+			console.log(c);
+			if(c > 0){
+				$(".block").addClass("active");
+				var aa,bb;
+				console.log(aa);
+				$("#clearBLock").on("mouseout",(e) => {
+					aa = e.clientX;
+					bb = e.clientY;
+					console.log(aa+"-"+bb);
+				});
+				$("#clearBLock").on("mouseleave",(e) => {
+					aa = "";
+					bb = "";
+				});
+				var interval;
+				if($(".block").hasClass("active")){
+					interval = setInterval(() => {
+						if(aa && bb){}else{	
+							$(".block").removeClass("active");
+						}
+					},5000);
+				}else{
+					clearInterval(interval);
+				}
+				try{
+					let b = a.split("(")[1].split(")")[0].split(",");
+					console.log(b);
+					$("#num").val(b[0]);
+					$("#num1").val(b[1]);
+				}catch(e){
+					$(".block").removeClass("active");
+				}
+			}
+
+		});
+	});	
+</script>
