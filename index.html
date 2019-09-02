@@ -2,91 +2,129 @@
 <html>
 <head>
 	<title></title>
-	<link rel="stylesheet" type="text/css" href="style.css">
-	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-	<style type="text/css">
-		*:focus{outline: 0;}
-	</style>
 </head>
 <body>
-<select id="select">
-	<option>Choose</option>
-	<option value="A(5,6)">A(5,6)</option>
-	<option value="B(6,5)">B(6,5)</option>
-</select>
-<br><br><br>
-<style type="text/css">
-	div.block{background: white;border: 1px solid;padding: 5px;width: 30%;display: none;}
-	div.block.active{display: block}
-</style>
-<div class="block" id="clearBLock">
-	<div>
-		<label>Indicator</label>
+	<div id="append_block">
+		<div id="entry_block" style="border:1px solid;padding: 15px;">
+			<div id="append_child" class="append_child">
+				<select id="ts1">
+					<option value="A">A</option>
+					<option value="B">B</option>
+				</select>
+				<select id="comparison">
+					<option value="A">A</option>
+					<option value="B">B</option>
+				</select>
+				<select id="ts2">
+					<option value="A">A</option>
+					<option value="B">B</option>
+				</select>
+				<a href="#" id="addchild">&nbsp;&nbsp;&nbsp;+</a>			
+			</div>
+		</div>
 	</div>
-	<div>
-		<input type="number" name="" id="num">
-		<input type="number" name="" id="num1">
-	</div>
- 	<div style="padding: 5px;">
-		<input type="button" name="" id="btn" value="Save">
-		<input type="button" name="" id="clr" value="Clear">
-	</div>
-</div>
-<!-- </div> -->
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+		<a href="#" id="addBlock">&nbsp;&nbsp;&nbsp;+ ADD BLOCK</a>			
+	<br>
+	<br>
+	<br>
+	<button id="send">submit</button>
+	<script type="text/javascript" src="jquery-3.3.1.slim.min.js"></script>
 </body>
 </html>
 <script type="text/javascript">
-	$(document).ready(() => {
-		// alert("ch");
-		$("#select").on("change", () => {
-			// console.log($("#select").val());
-			let a = [];
-			a = $("#select").val();
-			let c = 0;
-			while(a[c] != null){
-				if(a[c]==="("){
-					break;					
-				}else{
-					c++;
-				}
-			}
-			console.log(c);
-			if(c > 0){
-				$(".block").addClass("active");
-				var aa,bb;
-				console.log(aa);
-				$("#clearBLock").on("mouseout",(e) => {
-					aa = e.clientX;
-					bb = e.clientY;
-					console.log(aa+"-"+bb);
-				});
-				$("#clearBLock").on("mouseleave",(e) => {
-					aa = "";
-					bb = "";
-				});
-				var interval;
-				if($(".block").hasClass("active")){
-					interval = setInterval(() => {
-						if(aa && bb){}else{	
-							$(".block").removeClass("active");
-						}
-					},5000);
-				}else{
-					clearInterval(interval);
-				}
-				try{
-					let b = a.split("(")[1].split(")")[0].split(",");
-					console.log(b);
-					$("#num").val(b[0]);
-					$("#num1").val(b[1]);
-				}catch(e){
-					$(".block").removeClass("active");
-				}
-			}
+		
+$(document).ready(() => {
 
-		});
-	});	
+	const random = () => {
+	 var chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXTZabcdefghiklmnopqrstuvwxyz";
+	 var string_length = 4;
+	 var randomstring = '';
+	 for (var i=0; i<string_length; i++) {
+	  var rnum = Math.floor(Math.random() * chars.length);
+	  randomstring += chars.substring(rnum,rnum+1);
+	 }
+	 return randomstring;
+	};
+
+	var blockIndex = ["entry_block"];
+		FinalString = "";
+	var classIndex = ["append_child"];
+
+	$("a#addchild").on("click", () => {
+		//console.log(random());	
+		
+		let rstring = random();
+		$("div#entry_block").append('<div id=append_child-'+rstring+' class="append_child-'+rstring+'"><select id=ts1-'+rstring+'><option value="and">and</option><option value="or">or</option></select><select id=comparison-'+rstring+'><option>A</option><option>B</option></select><select id=condition-'+rstring+'><option>C</option><option>D</option></select><select id=ts2-'+rstring+'><option>E</option><option>F</option></select></div>');
+		
+		classIndex.push("append_child-"+rstring);
+		// console.log(classIndex);
+	});
+
+	$("a#addBlock").on("click", () => {
+		let rstring = random();
+		
+		$("div#append_block").append('<div><div><input type="radio" name="block_cond-'+rstring+'" value="and" checked>AND<input type="radio" name="block_cond-'+rstring+'" value="or">OR </div><div id="entry_block-'+rstring+'" style="border:1px solid;padding: 15px;"><div id="append_child" class="append_child-'+rstring+'"><select id="ts1-'+rstring+'"><option>A</option><option>B</option></select><select id="comparison-'+rstring+'"><option>C</option><option>D</option></select><select id="ts2-'+rstring+'"><option>E</option><option>F</option></select><a href="#" id="addchild-'+rstring+'" class="addchild">&nbsp;&nbsp;&nbsp;+</a></div></div></div>');
+
+		blockIndex.push("entry_block-"+rstring);
+		classIndex.push("append_child-"+rstring);
+		// console.log(blockIndex);
+		// console.log(classIndex);
+
+	});
+	var FinalString = [];
+
+	$(document).on("click",".addchild",(e) => {
+		let rstring = random();
+		
+		$("div#entry_block-"+e.target.id.split("-")[1]).append('<div id=append_child-'+rstring+' class="append_child-'+rstring+'"><select id=ts1-'+rstring+'><option value="and">and</option><option value="or">or</option></select><select id=comparison-'+rstring+'><option>A</option><option>B</option></select><select id=condition-'+rstring+'><option>C</option><option>D</option></select><select id=ts2-'+rstring+'><option>E</option><option>F</option></select></div>');
+		
+		classIndex.push(".append_child-"+rstring);
+		// console.log(classIndex);
+	});
+
+	$("button#send").on("click", () => {
+		var dict = {};
+		var list = [];
+		var finalDict = {};
+		var EntryString = ["("];
+		var FinalString;
+		let block_cond;
+		let l = 0;
+		for (var i = 0; i < blockIndex.length; i++) {
+			
+			let rowBlock = $("#"+blockIndex[i]);
+			let childBlock = rowBlock.children("div[class^='append_child'],div[class*='append_child']");
+			list = [];
+			for (var j = 0; j < childBlock.length; j++) {
+				let select = $(childBlock[j]).children("select");
+				// console.log(select);
+				let k = 0;
+				dict = {};
+				while (select.length > k) {
+					dict[select[k].id] = $("#"+select[k].id).val();
+					if(dict[select[k].id] === "and" || dict[select[k].id] === "or"){
+						EntryString.push(dict[select[k].id]);
+					}
+					k++;
+				}
+			FinalString  = EntryString.push(j);
+			list.push (dict);
+			}
+		EntryString.push(")");
+		
+		block_cond = rowBlock.parent().find("input[name^=block_cond]:checked,input[name*=block_cond]:checked").val();
+		EntryString.push(block_cond);
+		EntryString.push("(");
+		finalDict[blockIndex[i]] = list;
+		
+		}
+	EntryString.pop();
+	// EntryString.pop();
+	// console.log(JSON.stringify(finalDict));
+	console.log(finalDict);
+	console.log(EntryString.join(""));
+	});
+});
+
+
 </script>
